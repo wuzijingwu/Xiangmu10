@@ -1,6 +1,7 @@
 package text.bwei.com.xiangmu10.goods.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +11,15 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import text.bwei.com.xiangmu10.R;
+import text.bwei.com.xiangmu10.details.DetailsActivity;
+import text.bwei.com.xiangmu10.details.api.MessageDetails;
 import text.bwei.com.xiangmu10.goods.bean.Goods;
 
 /**
@@ -37,7 +42,7 @@ public class MyGoodsAdpater extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         MyGoodsViewHolder myGoodsViewHolder = (MyGoodsViewHolder) holder;
         myGoodsViewHolder.goodactivity_text.setText(list.get(position).getTitle());
 
@@ -47,8 +52,16 @@ public class MyGoodsAdpater extends RecyclerView.Adapter {
             Uri parse = Uri.parse(split[0]);
             myGoodsViewHolder.sdv_image.setImageURI(parse);
         }
-
         myGoodsViewHolder.goodactivity_price.setText(list.get(position).getPrice().toString());
+        myGoodsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().postSticky(new MessageDetails(list.get(position).getPid()));
+                Intent intent = new Intent(context, DetailsActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
 
     }
 

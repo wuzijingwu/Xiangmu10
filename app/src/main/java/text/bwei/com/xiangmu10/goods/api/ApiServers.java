@@ -15,5 +15,4 @@ import text.bwei.com.xiangmu10.goods.bean.Goods;
 public interface ApiServers {
     @POST
     Observable<Goods> getdatgood(@Url String url, @QueryMap Map<String,Integer> map);
-
 }
